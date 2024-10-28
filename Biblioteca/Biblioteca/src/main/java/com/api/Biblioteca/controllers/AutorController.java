@@ -1,4 +1,4 @@
-package com.api.controllers;
+package com.api.Biblioteca.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.api.Autor.Autor;
-import com.api.Autor.AutorRepository;
-import com.api.Autor.DadosCadastroAutor;
-import com.api.Autor.DadosListagemAutor;
-import com.api.Autor.dadosAlteracaoAutor;
+import com.api.Biblioteca.Autor.Autor;
+import com.api.Biblioteca.Autor.AutorRepository;
+import com.api.Biblioteca.Autor.DadosCadastroAutor;
+import com.api.Biblioteca.Autor.DadosListagemAutor;
+import com.api.Biblioteca.Autor.dadosAlteracaoAutor;
 
 import jakarta.transaction.Transactional;
 
@@ -46,7 +46,7 @@ public class AutorController {
 		var lista = autorRepository.findAll().stream().map(DadosListagemAutor::new).toList();
 		return ResponseEntity.ok(lista);
 	}
-	@PutMapping
+	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> alterar(@RequestBody dadosAlteracaoAutor dados){
 		var Autor = autorRepository.getReferenceById(dados.id());
@@ -62,7 +62,7 @@ public class AutorController {
 		autorRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
-	@GetMapping("{/id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> detalhar(@PathVariable Long id){
 		if(!autorRepository.existsById(id)) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Autor nao encontrado");

@@ -1,4 +1,4 @@
-package com.api.Autor;
+package com.api.Biblioteca.Genero;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,34 +11,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "Autor")
-@Entity(name = "Autor")
+@Table(name = "genero") 
+@Entity(name = "generos") 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 
-public class Autor {
-	public Autor(DadosCadastroAutor dados) {
-	this.nome = dados.nome();
-	this.id = dados.id();
+public class Genero {
+
+	public Genero(DadosCadastroGenero dados) {
+
+		this.id = dados.id();
+		this.nome = dados.nome();
+
 	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Long id;
 	private String nome;
-	
-	
-	
-	public void atualizaInformacoes(dadosAlteracaoAutor dados) {
-		if(dados.nome() != null) {
-			this.nome = dados.nome();
-		}
-		if(dados.id() != null) {
+
+	public void atualizaInformacoes(DadosAlteracaoGenero dados) {
+		if (dados.id() != null && dados.id() != 0) {
 			this.id = dados.id();
 		}
+		if (dados.nome() != null) {
+			this.nome = dados.nome();
+		}
+
 	}
 }
-
-

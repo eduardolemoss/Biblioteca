@@ -1,4 +1,4 @@
-package com.api.Autor;
+package com.api.Biblioteca.Autor;
 
 public record DadosListagemAutor(Long id, String nome) {
 	public DadosListagemAutor(Autor dados) {

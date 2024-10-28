@@ -1,4 +1,4 @@
-package com.api.Livro;
+package com.api.Biblioteca.Livro;
 
 public record DadosListagemLivro(String Titulo,String ISBN ,String Ano_publicacao, long Id_genero, long Id_autor,Long id) {
 	public DadosListagemLivro(Livro dados) {

@@ -1,4 +1,4 @@
-package com.api.Autor;
+package com.api.Biblioteca.Autor;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

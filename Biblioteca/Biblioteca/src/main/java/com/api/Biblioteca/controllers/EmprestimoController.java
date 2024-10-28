@@ -1,15 +1,12 @@
-package com.api.controllers;
-
-import com.api.emprestimo.EmprestimoRepository;
-import com.exemplo.emprestimos.model.Emprestimo;
-import com.exemplo.emprestimos.repository.EmprestimoRepository;
+package com.api.Biblioteca.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+import com.api.Biblioteca.emprestimo.Emprestimo;
+import com.api.Biblioteca.emprestimo.EmprestimoRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +44,10 @@ public class EmprestimoController {
     public ResponseEntity<Emprestimo> atualizarEmprestimo(@PathVariable Long id, @RequestBody Emprestimo emprestimoAtualizado) {
         return emprestimoRepository.findById(id)
                 .map(emprestimo -> {
-                    emprestimo.setDataEmprestimo(emprestimoAtualizado.getDataEmprestimo());
-                    emprestimo.setDataDevolucao(emprestimoAtualizado.getDataDevolucao());
-                    emprestimo.setIdLivro(emprestimoAtualizado.getIdLivro());
-                    emprestimo.setIdPessoa(emprestimoAtualizado.getIdPessoa());
+                    emprestimo.setData_emprestimo(emprestimoAtualizado.getData_emprestimo());
+                    emprestimo.setData_devolucao(emprestimoAtualizado.getData_devolucao());
+                    emprestimo.setId(emprestimoAtualizado.getId());
+                    emprestimo.setId_pessoa(emprestimoAtualizado.getId_pessoa());
                     emprestimoRepository.save(emprestimo);
                     return ResponseEntity.ok(emprestimo);
                 })
@@ -58,7 +55,7 @@ public class EmprestimoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirEmprestimo(@PathVariable Long id) {
+    public ResponseEntity<Object> excluirEmprestimo(@PathVariable Long id) {
         return emprestimoRepository.findById(id)
                 .map(emprestimo -> {
                     emprestimoRepository.delete(emprestimo);

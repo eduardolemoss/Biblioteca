@@ -1,4 +1,4 @@
-package com.api.emprestimo;
+package com.api.Biblioteca.emprestimo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
