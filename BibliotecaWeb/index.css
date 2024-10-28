@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: system-ui, 
+    Arial, Helvetica, sans-serif;
+    background-color: #1c145e;
+    height: 8vh;
+}
+
+.nav-list{
+    list-style:none;
+    display: flex;
+}
+
+.nav-list li {
+    letter-spacing: 2px;
+    margin-left: 28px;
+    font-size: 15px;
+}
+
+.mobile-menu {
+    cursor: pointer;
+    display: none;
+}
+
+.mobile-menu div{
+    width: 32px;
+    height: 2px;
+    background: #fff;
+    margin: 6px;
+}
+@media (max-width: 990px){ 
+
+    .nav-list{
+        position: absolute;
+        top: 8vh;
+        right: 0;
+        width: 30vw;
+        height: 92vh;
+        background: #1c145e;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        
+    }
+    .nav-list li {
+        margin-left: 0;
+        opacity: 10;
+    }
+    .mobile-menu{
+          display: block;
+    }
+    
+}
+.Salvar{
+    width: 46px;
+    height: 33px;
+    margin: 20px;
+    background: #7d74c7;
+      }
+.editar {
+    background-image: url('editar.png'); /* Substitua pelo caminho da sua imagem */
+    background-size: contain; /* Ajusta o tamanho da imagem */
+    background-repeat: no-repeat; /* Não repete a imagem */
+    border: none; /* Remove a borda padrão */
+    width: 30px; /* Ajuste a largura do botão */
+    height: 30px; /* Ajuste a altura do botão */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+.Excluir {
+    background-image: url('excluir.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat; /* Não repete a imagem */
+    border: none; /* Remove a borda padrão */
+    width: 30px; /* Ajuste a largura do botão */
+    height: 30px; /* Ajuste a altura do botão */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+.editar, Excluir {
+    margin: 4 4px;
+    margin-right: 8px;
+    
+}
+
+ table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #afafeb;
+}
