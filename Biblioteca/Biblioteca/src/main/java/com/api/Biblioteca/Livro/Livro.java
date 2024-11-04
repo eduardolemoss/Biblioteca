@@ -28,12 +28,11 @@ public class Livro {
 		this.ano_publicacao = dados.ano_publicacao();
 		this.id_autor = dados.id_autor();
 		this.id_genero = dados.id_genero();
-		this.id = dados.id();
+		
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private Long id;
 	private String titulo;
 	private String ISBN;
