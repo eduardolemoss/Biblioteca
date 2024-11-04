@@ -12,16 +12,20 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(data => {
             const selectAutor = document.getElementById('autor');
-            data.forEach(autor => {
-                const option = document.createElement('option');
-                option.value = autor.id;
-                option.textContent = autor.nome;
-                selectAutor.appendChild(option);
-            })
+            if(selectAutor){
+                data.forEach(autor => {
+                    const option = document.createElement('option');
+                    option.value = autor.id;
+                    option.textContent = autor.nome;
+                    selectAutor.appendChild(option);
+                })
+            } else {
+                console.error("Elemento 'autor' nao encontrado")
+                    }
         })
-    
+        
         .catch(error => {
-            console.error('Erro ao carregar autores:', error);
+            console.error('Erro ao carregar autores:');
         });
      
     }
@@ -35,12 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(data => {
             const selectgenero = document.getElementById('genero');
-            data.forEach(genero => {
-                const option = document.createElement('option');
-                option.value = genero.id;
-                option.textContent = genero.nome;
-                selectgenero.appendChild(option);
-            })
+            if(selectgenero){
+                data.forEach(genero => {
+                    const option = document.createElement('option');
+                    option.value = genero.id;
+                    option.textContent = genero.nome;
+                    selectgenero.appendChild(option);
+                })
+            }
+            else{
+                console.error("erro ao carregar generos")
+            }
+           
         })
     
         .catch(error => {
@@ -50,18 +60,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     });
 
-    const confirmarButton = document.getElementById('confirmar');
-    if (confirmarButton) {
-        confirmarButton.addEventListener('click', function confirmar(event) {
-            event.preventDefault();
+   function confirmar() {
+    
+   
     
     const livro = {
          titulo: document.getElementById('titulo').value,
          ISBN: document.getElementById('ISBN').value,
-         autor: document.getElementById('autor').value,
-         genero: document.getElementById('genero').value,
-         anoPublicacao: document.getElementById('ano-publicacao').value 
+         id_autor: document.getElementById('autor').value,
+         id_genero: document.getElementById('genero').value,
+         ano_publicacao: document.getElementById('ano-publicacao').value 
     };
+    console.log("Dados do livro a serem enviados:", livro)
 
     fetch('http://192.168.1.7:8080/Livro',{
         method: 'POST',
@@ -71,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(livro)
     })
     .then(response => {
+        console.log("Status da resposta:", response.status)
         if(!response.ok){
             throw new Error('Erro ao inserir livro');
         }
@@ -84,5 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Erro:', error);
         alert('Ocorreu um erro ao inserir.');
     });
-});
-    }
+    
+}
+    
