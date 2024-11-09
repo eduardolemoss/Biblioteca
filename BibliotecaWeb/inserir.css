@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #243757 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.livro {
+    color: #243757 !important;
+    text-align: center;
+}
+
+.Inserir {
+    background-color: #c2b79b;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px #3a5f6f(0, 0, 0, 0.1);
+    width: 550px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #243757;
+    font-weight: bold;
+}
+
+.input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+#confirmar {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+a {
+    color: #243757 !important;
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: bolder;
+    font-size: 18px;
+    
+}
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #dad5b7; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    margin-top: 60px; 
+}
+.nav-list{
+    list-style:none;
+    display: flex;
+    
+}
+
+.nav-list li {
+    letter-spacing: 2px;
+    margin-left: 28px;
+    font-size: 15px;
+}
+.list-nav{
+    padding-right: 1200px;
+
+}
+
+
+
+
+
+
+

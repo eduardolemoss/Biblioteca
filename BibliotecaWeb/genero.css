@@ -1,0 +1,109 @@
+body{
+    background-color: #243757 !important; 
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #243757 !important;
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: system-ui, 
+    Arial, Helvetica, sans-serif;
+    background-color: #dad5b7;
+    height: 8vh;
+}
+
+.nav-list{
+    list-style:none;
+    display: flex;
+}
+
+.nav-list li {
+    letter-spacing: 2px;
+    margin-left: 28px;
+    font-size: 20px;
+}
+
+.mobile-menu {
+    cursor: pointer;
+    display: none;
+}
+
+
+.Salvar{
+    width: 90%; 
+    margin: 5px;
+    background-color: #243757; 
+    color: white; 
+    border: none; 
+    padding: 10px 1px;
+    border-radius: 10px;
+    font-size: 16px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+.table {
+    width: 30%; 
+    border-collapse: collapse;
+    text-align: left;
+    background-color: #c2b79b;
+    height: 66%;
+    
+}
+.table th, td {
+    padding: 0px;
+            text-align: left;
+            border-bottom: 1px solid #dad5b7;
+            
+}
+
+th, td {
+    text-align: left;
+    padding: 20px;
+    font-size: 130%;
+    width: 80%;
+}
+
+.table th {
+    background-color: #dad5b7;
+    color: #243757;
+    width: 10px;
+    font-size: 100%;
+    padding: 10px;
+}
+.container{
+    display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50vh;
+}
+ h1{
+    color: white;
+ }
+
+ #editar{
+    font-size: 250%;
+    cursor: pointer;
+    margin-right: 8px;
+       
+ }
+ #delete{
+    font-size: 250%;
+    cursor: pointer;
+ 
+ }
+
