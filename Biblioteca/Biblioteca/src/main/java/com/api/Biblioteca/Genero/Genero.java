@@ -35,9 +35,7 @@ public class Genero {
 	private String nome;
 
 	public void atualizaInformacoes(DadosAlteracaoGenero dados) {
-		if (dados.id() != null && dados.id() != 0) {
-			this.id = dados.id();
-		}
+		
 		if (dados.nome() != null) {
 			this.nome = dados.nome();
 		}

@@ -48,10 +48,11 @@ public class AutorController {
 	}
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> alterar(@RequestBody dadosAlteracaoAutor dados){
-		var Autor = autorRepository.getReferenceById(dados.id());
+	public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody dadosAlteracaoAutor dados){
+		var Autor = autorRepository.getReferenceById(id);
 		Autor.atualizaInformacoes(dados);
-		return ResponseEntity.ok(Autor);
+		autorRepository.save(Autor);
+		return ResponseEntity.ok(dados);
 	}
 	@DeleteMapping("/{id}")
 	@Transactional

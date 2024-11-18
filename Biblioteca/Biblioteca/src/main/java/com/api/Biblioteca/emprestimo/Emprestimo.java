@@ -21,12 +21,35 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = "id")
 @Entity(name = "emprestimos")
 public class Emprestimo {
+    public Emprestimo(DadosCadastroEmprestimo dados) {
+    	
+    	this.data_emprestimo = dados.data_emprestimo();
+    	this.data_devolucao = dados.data_devolucao();
+    	this.id_pessoa = dados.id_pessoa();
+    	this.id_livro = dados.id_livro();
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private String data_emprestimo;
     private String data_devolucao;
-    private int id_pessoa;
+    private Long id_pessoa;
     private Long id_livro;
+  
+    
+    public void atualizaInformacoes(dadosAlteracaoEmprestimo dados) {
+    	if(dados.data_emprestimo() != null) {
+    		this.data_emprestimo = dados.data_emprestimo();
+    	}
+    	if(dados.data_devolucao() != null) {
+    		this.data_devolucao = dados.data_devolucao();
+    	}
+    	if(dados.id_pessoa() != null) {
+    		this.id_pessoa = dados.id_pessoa();
+    	}
+    	if(dados.id_livro() != null) {
+    		this.id_livro = dados.id_livro();
+    	}
+    }
 }

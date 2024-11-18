@@ -1,6 +1,6 @@
 package com.api.Biblioteca.controllers;
 
-import java.net.URI;
+import java.net.URI; 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ import com.api.Biblioteca.Genero.DadosCadastroGenero;
 import com.api.Biblioteca.Genero.DadosListagemGenero;
 import com.api.Biblioteca.Genero.Genero;
 import com.api.Biblioteca.Genero.GeneroRepository;
-
 import jakarta.transaction.Transactional;
 
 @RestController
@@ -46,10 +45,11 @@ public class GeneroController {
 	}
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> alterar(@RequestBody DadosAlteracaoGenero dados){
-		var Genero = generoRepository.getReferenceById(dados.id());
-		Genero.atualizaInformacoes(dados);
-		return ResponseEntity.ok(Genero);
+	public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody DadosAlteracaoGenero dados){
+		var genero = generoRepository.getReferenceById(id);
+		genero.atualizaInformacoes(dados);
+		generoRepository.save(genero);
+		return ResponseEntity.ok(dados);
 	}
 	@DeleteMapping("/{id}")
 	@Transactional
@@ -60,7 +60,15 @@ public class GeneroController {
 		generoRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+	@GetMapping("/{id}")
+    public ResponseEntity<?> detalhar(@PathVariable Long id) {
+    	if (!generoRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Genero não encontrada");
+        } 
+    	var genero = generoRepository.getReferenceById(id);
+		DadosListagemGenero dados = new DadosListagemGenero(genero);
+		return ResponseEntity.ok(dados);
+    }
 
 
 }

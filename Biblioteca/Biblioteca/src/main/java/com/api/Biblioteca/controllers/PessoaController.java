@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.api.Biblioteca.Genero.DadosListagemGenero;
 import com.api.Biblioteca.Pessoa.DadosCadastroPessoa;
 import com.api.Biblioteca.Pessoa.DadosListagemPessoa;
 import com.api.Biblioteca.Pessoa.Pessoa;
@@ -48,10 +49,11 @@ public class PessoaController {
 	}
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> alterar(@RequestBody dadosAlteracaoPessoa dados){
-		var Pessoa = pessoaRepository.getReferenceById(dados.id());
+	public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody dadosAlteracaoPessoa dados){
+		var Pessoa = pessoaRepository.getReferenceById(id);
 		Pessoa.atualizaInformacoes(dados);
-		return ResponseEntity.ok(Pessoa);
+		pessoaRepository.save(Pessoa);
+		return ResponseEntity.ok(dados);
 	}
 	@DeleteMapping("/{id}")
 	@Transactional
@@ -62,6 +64,15 @@ public class PessoaController {
 		pessoaRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
+	@GetMapping("/{id}")
+    public ResponseEntity<?> detalhar(@PathVariable Long id) {
+    	if (!pessoaRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("pessoa não encontrada");
+        } 
+    	var pessoa = pessoaRepository.getReferenceById(id);
+		DadosListagemPessoa dados = new DadosListagemPessoa(pessoa);
+		return ResponseEntity.ok(dados);
+    }
 	
 	
 }

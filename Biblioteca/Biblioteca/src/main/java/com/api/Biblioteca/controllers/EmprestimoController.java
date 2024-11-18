@@ -5,8 +5,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.api.Biblioteca.Livro.LivroRepository;
+import com.api.Biblioteca.Pessoa.PessoaRepository;
+import com.api.Biblioteca.emprestimo.DadosCadastroEmprestimo;
+import com.api.Biblioteca.emprestimo.DadosListagemEmprestimo;
 import com.api.Biblioteca.emprestimo.Emprestimo;
 import com.api.Biblioteca.emprestimo.EmprestimoRepository;
+import com.api.Biblioteca.emprestimo.dadosAlteracaoEmprestimo;
+
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,14 +24,23 @@ public class EmprestimoController {
 	
 	@Autowired
     private  EmprestimoRepository emprestimoRepository;
+	
+	@Autowired
+	private LivroRepository livroRepository;
+	
+	@Autowired
+	private PessoaRepository pessoaRepository;
 
     public EmprestimoController(EmprestimoRepository emprestimoRepository) {
         this.emprestimoRepository = emprestimoRepository;
     }
 
     @GetMapping
-    public List<Emprestimo> listarEmprestimos() {
-        return emprestimoRepository.findAll();
+    public ResponseEntity<List<DadosListagemEmprestimo>> listar(){
+    	var lista = emprestimoRepository.findAll().stream().map(DadosListagemEmprestimo::new).toList();
+    	return ResponseEntity.ok(lista);
+    	
+    	
     }
 
     @GetMapping("/{id}")
@@ -35,23 +51,28 @@ public class EmprestimoController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Emprestimo> criarEmprestimo(@RequestBody Emprestimo novoEmprestimo) {
         Emprestimo emprestimo = emprestimoRepository.save(novoEmprestimo);
         return ResponseEntity.status(HttpStatus.CREATED).body(emprestimo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Emprestimo> atualizarEmprestimo(@PathVariable Long id, @RequestBody Emprestimo emprestimoAtualizado) {
-        return emprestimoRepository.findById(id)
-                .map(emprestimo -> {
-                    emprestimo.setData_emprestimo(emprestimoAtualizado.getData_emprestimo());
-                    emprestimo.setData_devolucao(emprestimoAtualizado.getData_devolucao());
-                    emprestimo.setId(emprestimoAtualizado.getId());
-                    emprestimo.setId_pessoa(emprestimoAtualizado.getId_pessoa());
-                    emprestimoRepository.save(emprestimo);
-                    return ResponseEntity.ok(emprestimo);
-                })
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @Transactional
+    public ResponseEntity<?> atualizarEmprestimo(@PathVariable Long id, @RequestBody dadosAlteracaoEmprestimo dados) {
+    	if(!emprestimoRepository.existsById(id)) {
+    		return ResponseEntity.badRequest().body("emprestimo nao encontrado");
+    	}
+    	if(!livroRepository.existsById(id)) {
+    		return ResponseEntity.badRequest().body("Livro não encontrado");
+    	}
+    	if(!pessoaRepository.existsById(id)) {
+    		return ResponseEntity.badRequest().body("Pessoa não encontrada");
+    	}
+    	var emprestimo = emprestimoRepository.getReferenceById(id);
+    	emprestimo.atualizaInformacoes(dados);
+    	return ResponseEntity.ok(dados);
+    	
     }
 
     @DeleteMapping("/{id}")

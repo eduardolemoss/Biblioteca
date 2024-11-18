@@ -54,18 +54,19 @@ public class LivroController {
 
 	}
 
-	@PutMapping
+	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> alterar(@RequestBody dadosAlteracaoLivro dados) {
+	public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody dadosAlteracaoLivro dados) {
 		if (!autorRepository.existsById(dados.id_autor())) {
 			return ResponseEntity.badRequest().body("Autor não encontrado");
 
 		}
-		if (!livroRepository.existsById(dados.id())) {
+		if (!livroRepository.existsById(id)) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Livro não encontrado");
 		}
-		var livro = livroRepository.getReferenceById(dados.id());
+		var livro = livroRepository.getReferenceById(id);
 		livro.atualizaInformacoes(dados);
+		livroRepository.save(livro);
 		return ResponseEntity.ok(dados);
 	} 
 

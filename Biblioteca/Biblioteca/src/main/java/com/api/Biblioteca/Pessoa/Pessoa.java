@@ -27,7 +27,6 @@ public class Pessoa {
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private Long id;
 	private String nome;
 	private String email;
@@ -38,7 +37,7 @@ public class Pessoa {
 			this.nome = dados.nome();
 		}
 		if(dados.email() != null) {
-			this.nome = dados.nome();
+			this.email = dados.email();
 		}
 		if(dados.telefone() != null) {
 			this.telefone = dados.telefone();
