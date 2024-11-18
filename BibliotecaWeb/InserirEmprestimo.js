@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const option = document.createElement('option');
                     option.value = carregarPessoa.id;
                     option.textContent = carregarPessoa.nome;
+<<<<<<< HEAD
                     selectpessoa.appendChild(option);
+=======
+                    selectAutor.appendChild(option);
+>>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
                 })
             } else {
                 console.error("Elemento 'pessoa' nao encontrado")
@@ -44,7 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const option = document.createElement('option');
                     option.value = carregarLivro.id;
                     option.textContent = carregarLivro.nome;
+<<<<<<< HEAD
                     selectlivro.appendChild(option);
+=======
+                    selectgenero.appendChild(option);
+>>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
                 })
             }
             else{
@@ -63,13 +71,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function confirmar() {
     const emprestimo = {
+<<<<<<< HEAD
+=======
+         Data_emprestimo: document.getElementById('data-emprestimo').value,
+         Data_devolucao: document.getElementById('data-devolucao').value,
+>>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
          id_pessoa: document.getElementById('pessoa-id').value,
          id_livro: document.getElementById('livro-id').value,
         
     };
     console.log("Dados do livro a serem enviados:", emprestimo)
 
+<<<<<<< HEAD
     fetch('http://192.168.1.7:8080/Emprestimo',{
+=======
+    fetch('http://192.168.1.7:8080/Livro',{
+>>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'

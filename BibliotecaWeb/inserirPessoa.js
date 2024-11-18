@@ -8,7 +8,11 @@
     };
     console.log("Dados do livro a serem enviados:", pessoa)
 
+<<<<<<< HEAD
     fetch('http://localhost:8080/Pessoa',{
+=======
+    fetch('http://localhost:8080/Livro',{
+>>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'

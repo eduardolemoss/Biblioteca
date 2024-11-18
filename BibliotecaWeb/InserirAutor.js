@@ -3,7 +3,11 @@ function confirmar() {
    
     
     const autor = {
+<<<<<<< HEAD
          nome: document.getElementById('nome').value
+=======
+         autor: document.getElementById('nome').value
+>>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
          
     };
     console.log("Dados do livro a serem enviados:", autor)
