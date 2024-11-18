@@ -1,6 +1,5 @@
 body{
-    background-color: #dad5b7 !important; 
-    
+    background-color: #243757 !important; 
 }
 * {
     margin: 0;
@@ -8,7 +7,7 @@ body{
 }
 
 a {
-    color: #ebebeb !important;
+    color: #243757 !important;
     text-decoration: none;
     transition: 0.3s;
     font-weight: bold;
@@ -21,7 +20,7 @@ nav{
     align-items: center;
     font-family: system-ui, 
     Arial, Helvetica, sans-serif;
-    background-color: #243757;
+    background-color: #dad5b7;
     height: 8vh;
 }
 
@@ -43,8 +42,8 @@ nav{
 
 
 .Salvar{
-    width: 7%; 
-    margin: 10px;
+    width: 90%; 
+    margin: 5px;
     background-color: #243757; 
     color: white; 
     border: none; 
@@ -55,24 +54,20 @@ nav{
     text-transform: uppercase; 
     cursor: pointer; 
     transition: background-color 0.3s ease, transform 0.2s ease;
-    position: absolute;
-            left: 90%; /* Coloca o botão 20px da borda esquerda da tela */
-            top:  93px
-    
       }
 
 .table {
-    width: 80%;
+    width: 30%; 
     border-collapse: collapse;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    background-color: #c2b79b;
+    height: 70%;
     
 }
 .table th, td {
     padding: 0px;
             text-align: left;
-            border-bottom: 0.1px solid #243757;
+            border-bottom: 1px solid #dad5b7;
             
 }
 
@@ -80,68 +75,33 @@ th, td {
     text-align: left;
     padding: 20px;
     font-size: 130%;
-    width: 18%;
 }
 
 .table th {
-    background-color: #243757; 
-    color: white;
-    padding: 5px; 
-    text-align: left;
-    width: 5%;
+    background-color: #dad5b7;
+    color: #243757;
+    font-size: 100%;
+    padding: 10px;
 }
 .container{
     display: flex;
             justify-content: center;
             align-items: center;
-            height: 45vh;
+            height: 50vh;
 }
  h1{
-    color: #243757;
-    font-size: 45px;
-    margin: 10px;
+    color: white;
  }
 
  #editar{
-    font-size: 120%;
+    font-size: 250%;
     cursor: pointer;
     margin-right: 8px;
-    
        
  }
  #delete{
-    font-size: 120%;
+    font-size: 250%;
     cursor: pointer;
-    
  
  }
-table td{
-    text-align: left; 
-            padding-left: 5px;
-            color:#243757;
-            
-            
-}
-.td-icones{
-    text-align: center;
-    width: 7%;
-}
-.input-busca{
-      width: 98%; 
-     height: 43px;
-     border-radius: 8px; 
-     margin: 15px;
-}
-input::placeholder{
-    font-size: 18px;
-    padding: 10px;
- 
-}
-#espaco{
-    color: #243757;
-    width: 5%;
-}
-.fa-solid {
-    cursor: pointer;
-    font-size: 25px;
-}
+

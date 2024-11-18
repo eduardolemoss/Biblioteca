@@ -3,50 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca</title>
-    <link rel="stylesheet" href="Index.css">
-    </head>
-    <body>
-        
-        <header>
-            <nav>
-                
-                <a class="logo"> Biblioteca</a>
-                <div class="mobile-menu">
-                    <div class="line1"></div>
-                    <div class="line2"></div>
-                    <div class="line3"></div>
-  
-                </div>
-                <ul class="nav-list"> 
-                    <li><a href="Livros.html">Livro</a></li>
-                    <li><a href="Autor.html">Autor</a></li>
-                    <li><a href="Pessoa.html">Cliente</a></li>
-                    <li><a href="Emprestimo.html">Empréstimo</a></li>
-                    <li><a href="Genero.html">Gênero</a></li>
-                    <li><a href="Reserva.html">Devolução</a></li>
-                </ul>
-                <button class="Salvar"><a href=""></a>
-                    <p>Inserir</button></p>
-            </nav>
-        </header>
-        <main><h2>Clientes</h2>
-    <table>
-        <tr>
-            <th></th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Telefone</th>
+    <title>Biblioteca - Pessoa</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a class="logo" style="font-size: 33px;">BIBLIOTECH</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+                <li><a href="Livros.html">Livro <i class="fa-solid fa-book-open" style="padding: 2px;"></i></a></li>
+                <li><a href="Autor.html">Autor <i class="fa-solid fa-user"></i></a></li>
+                <li><a href="Pessoa.html">Cliente <i class="fa-solid fa-people-line" style="padding: 3px;"></i></a></li>
+                <li><a href="Emprestimo.html">Empréstimo <i class="fa-solid fa-right-left"></i></a></li>
+                <li><a href="Genero.html">Gênero <i class="fa-solid fa-tag"></i></a></li>
+                <li><a href="Reserva.html">Reservas <i class="fa-regular fa-calendar"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Pessoa</h1>
+        <div class="input-busca-container">
+            <input type="text" class="input-busca" placeholder="Buscar Pessoa..." oninput="busca()"
+            id="searchInput">
+        </div>
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <a href="InserirPessoa.html">
+                                <button class="Salvar">
+                                     Inserir <i class="fa-solid fa-plus" style="padding-right: 5px;"></i>
+                                </button>
+                            </a>
+                        </th>
+                        <th scope="col" style="font-size: 23px;">Nome</th>
+                        <th scope="col" style="font-size: 23px;">Email</th>
+                        <th scope="col" style="font-size: 23px;">Telefone</th>
+                    </tr>
+                </thead>
+                <tbody class="campos-tabela">
+                    
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded",function () {
+            fetchPessoas();
+        })
+        function fetchPessoas(){
+            fetch('http://localhost:8080/Pessoa')
+            .then(response => {
+                if (!response.ok){
+                    throw new Error ("Erro ao buscar os Pessoas");
+                }
+                return response.json();
+            })
             
-        </tr>
-        <tr>
-            <td><button class="editar">Editar</button><button class="Excluir">Excluir</button></td>
-            <td>Eduardo Lemos</td>
-            <td>eduardo@gmail.com</td>
-            <td>(21)98521-9412</td>
-        </tr>
+            .then(data => {
+                console.log("Dados recebidos:", data);  // Verifique a resposta completa
+                const tabela = document.querySelector(".table tbody");
+                tabela.innerHTML = ""; 
+
+                data.forEach(pessoa => {
+                    const linha = document.createElement("tr");
+                    linha.id = `pessoa-${pessoa.Id}`;
+                    
+                    linha.innerHTML = `
+    <td class="td-icones">
+        <i class="fa-solid fa-pen-to-square" id="editar" onclick="editar(${pessoa.Id}, '${pessoa.nome}', '${pessoa.telefone}', '${pessoa.email}')"></i> 
+        <i class="fa-solid fa-trash" id="delete" onclick="excluirRegistro(${pessoa.Id})"></i>
+    </td>
+    <td>${pessoa.nome}</td>
+    <td>${pessoa.email}</td>
+    <td>${pessoa.telefone}</td>
+`;
+    
+                    tabela.appendChild(linha);
+                
+            });
+                
+            })
+            
+            .catch(error => console.error("Erro:",error));
+        }
+
+        function excluirRegistro(Id){
+            if(!confirm("tem certeza que deseja excluir?")){
+                return;
+            }
+
+            fetch(`http://localhost:8080/Pessoa/${Id}`,{
+                method: 'DELETE'
+            })
+            .then(response => {
+                if(response.ok){
+                    alert("Cliente excluído!");
+                    document.getElementById(`pessoa-${Id}`).remove();
+                }else{
+                    alert("Erro ao excluir o Cliente");
+                }
+            })
+            .catch(error => console.error("Erro:",error));
+        }
+        const valoresOriginais = {}
+
+        function editar(Id,nome,telefone,email){
+            console.log(Id);
+            const linha = document.getElementById(`pessoa-${Id}`);
+            valoresOriginais[Id] =
+
+            {nome,
+            telefone,
+            email 
+        };
+            linha.innerHTML = `
+        <td class="td-icones">
+            <i class="fa-solid fa-save" onclick="atualizarRegistro(${Id})"></i> 
+            <i class="fa-solid fa-undo" onclick="desfazerEdicao(${Id})"></i>
+            <i class="fa-solid fa-times" onclick="cancelarEdicao(${Id})"></i>
+        </td>
+        <td><input type="text" id="nome-${Id}" value="${nome}"></td>
+        <td><input type="text" id="telefone-${Id}" value="${telefone}"></td> 
+        <td><input type="text" id="email-${Id}" value="${email}"></td> 
+  
+    `;
+
+            }
+    function cancelarEdicao(Id){
+        const valores = valoresOriginais[Id];
+        const linha = document.getElementById(`pessoa-${Id}`);
+
+        linha.innerHTML = `
+        <td class="td-icones">
+            <i class="fa-solid fa-pen-to-square" onclick="editar(${Id}, '${valores.nome}','${valores.telefone}','${valores.email}')"></i>
+            <i class="fa-solid fa-trash" onclick="excluirRegistro(${Id})"></i>
+        </td>
+        <td>${valores.nome}</td>
+        <td>${valores.telefone}</td>
+        <td>${valores.email}</td>
+    `;
+
+    }
+
+    function desfazerEdicao(Id){
+        const valores = valoresOriginais[Id];
+        document.getElementById(`nome-${Id}`).value = valores.nome;
+        document.getElementById(`telefone-${Id}`).value = valores.telefone;
+        document.getElementById(`email-${Id}`).value = valores.email;
+    }
+    function atualizarRegistro(Id){
+        const nome = document.getElementById(`nome-${Id}`).value;
+        const telefone = document.getElementById(`telefone-${Id}`).value;
+        const email = document.getElementById(`email-${Id}`).value;
+    
+
+
+        const atualizacao = {
+            nome: nome,
+            telefone: telefone,
+            email: email
+        };
+        console.log(atualizacao);
+        return fetch(`http://localhost:8080/Pessoa/${Id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(atualizacao)
+        })
+        .then(response => {
+            if(response.ok){
+                
+                fetchPessoas();
+            }else{
+                alert("Erro ao atualizar o registro");
+            }
+        })
+        .catch(error => console.error("Erro:", error));
+    }
+
+   
+    document.addEventListener('DOMContentLoaded', fetchPessoas); 
+
+
+
+document.getElementById('searchInput').addEventListener('input', function () {
+
+           const searchTerm = this.value.toLowerCase();
+           const rows = document.querySelectorAll('.campos-tabela tr');  
+           rows.forEach(row => {
+               const cells = row.getElementsByTagName('td');
+               let rowContainsSearchTerm = false;
+
+               for (let i = 0; i < cells.length; i++) {
+                   const cellText = cells[i].textContent.toLowerCase();
+                   if (cellText.includes(searchTerm)) {
+                       rowContainsSearchTerm = true;
+                       break;
+                   }
+                 
+               }
+             
+
+               row.style.display = rowContainsSearchTerm ? '' : 'none';
+           });
+       });
+            
+     
         
-    </table>
-    <script src="mobile-navebar.js"></script>
+        
+
+    </script>
+    
 </body>
 </html>

@@ -1,48 +1,192 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca</title>
     <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
-        
-        <header>
-            <nav>
-                
-                <a class="logo"> Biblioteca</a>
-                <div class="mobile-menu">
-                    <div class="line1"></div>
-                    <div class="line2"></div>
-                    <div class="line3"></div>
-  
-                </div>
-                <ul class="nav-list"> 
-                    <li><a href="Livros.html">Livro</a></li>
-                    <li><a href="Autor.html">Autor</a></li>
-                    <li><a href="Pessoa.html">Cliente</a></li>
-                    <li><a href="Emprestimo.html">Empréstimo</a></li>
-                    <li><a href="Genero.html">Gênero</a></li>
-                    <li><a href="Reserva.html">Devolução</a></li>
-                </ul>
-                <button class="Salvar"><a href=""></a>
-                    <p>Inserir</button></p>
-            </nav>
-        </header>
-        <main><h2>Autores</h2>
-    <table>
-        <tr>
-            <th></th>
-            <th>Nome</th>
+    <link rel="stylesheet" href="autor.css">
+    <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a style="font-size: 33px;">BIBLIOTECH</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list"> 
+                <li><a href="Livros.html">Livro<i class="fa-solid fa-book-open" style="padding: 2px;"></i></a></li>
+                <li><a href="Autor.html">Autor <i class="fa-solid fa-user"></i></a></li>
+                <li><a href="Pessoa.html">Cliente<i class="fa-solid fa-people-line" style="padding: 3px;"></i></a></li>
+                <li><a href="Emprestimo.html">Empréstimo <i class="fa-solid fa-right-left"></i></a></li>
+                <li><a href="Genero.html">Gênero <i class="fa-solid fa-tag"></i></a></li>
+                <li><a href="Reserva.html">Reservas <i class="fa-regular fa-calendar"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Autor</h1>
+        <a href="InserirAutor.html"><button class="Salvar">Inserir <i class="fa-solid fa-plus"></i></button></a>
+        <input class="input-busca" type="text" placeholder="Buscar por nome do autor" oninput="busca()" id="searchInput">
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th id="espaco">*</th>
+                        <th scope="col" style="font-size: 23px;">Nome</th>
+                    </tr>
+                </thead>
+                <tbody class="campos-tabela">
+                    <tr>
+                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded",function () {
+            fetchAutor();
+        })
+        function fetchAutor(){
+            fetch('http://localhost:8080/Autor')
+            .then(response => {
+                if (!response.ok){
+                    throw new Error ("Erro ao buscar os Autor");
+                }
+                return response.json();
+            })
             
-        </tr>
-        <tr>
-            <td><button class="editar">Editar</button><button class="Excluir">Excluir</button></td>
-            <td>Eduardo Lemos</td>
-        </tr>
+            .then(data => {
+                const tabela = document.querySelector(".table tbody");
+                tabela.innerHTML = ""; 
+
+                data.forEach(Autor => {
+                    const linha = document.createElement("tr");
+                    linha.id = `Autor-${Autor.id}`;
+                    
+                    
+                    linha.innerHTML = `
+                        <td class="td-icones">
+                            <i class="fa-solid fa-pen-to-square" id="editar" onclick="editar(${Autor.id}, '${Autor.nome}')"
+                            ></i> 
+                            <i class="fa-solid fa-trash" id="delete" onclick="excluirRegistro(${Autor.id})"></i>
+                        </td>
+                        <td>${Autor.nome}</td>
+                    `;
+                    
+                    tabela.appendChild(linha);
+                
+            })
+                
+            })
+            
+            .catch(error => console.error("Erro:",error));
+        }
+
+        function excluirRegistro(id){
+            if(!confirm("tem certeza que deseja excluir?")){
+                return;
+            }
+
+            fetch(`http://localhost:8080/Autor/${id}`,{
+                method: 'DELETE'
+            })
+            .then(response => {
+                if(response.ok){
+                    alert("Autor excluído!");
+                    document.getElementById(`Autor-${id}`).remove();
+                }else{
+                    alert("Erro ao excluir o Autor");
+                }
+            })
+            .catch(error => console.error("Erro:",error));
+        }
+        const valoresOriginais = {};
+
+        function editar(id, nome){
+            const linha = document.getElementById(`Autor-${id}`);
+            valoresOriginais[id] = {
+                nome
+            };
+            linha.innerHTML = `
+                <td class="td-icones">
+            <i class="fa-solid fa-save" onclick="atualizarRegistro(${id})"></i> 
+            <i class="fa-solid fa-undo" onclick="desfazerEdicao(${id})"></i>
+            <i class="fa-solid fa-times" onclick="cancelarEdicao(${id})"></i>
+        </td>
+                <td><input type="text" id="nome-${id}" value="${nome}"></td> 
+            `;
+            
+        }
+        function cancelarEdicao(id){
+            const valores = valoresOriginais[id];
+            const linha = document.getElementById(`Autor-${id}`);
+
+            linha.innerHTML = `
+             <td class="td-icones">
+                 
+            <i class="fa-solid fa-pen-to-square" onclick="editar(${id}, '${valores.nome}')"></i>
+            <i class="fa-solid fa-trash" onclick="excluirRegistro(${id})"></i></td>
+            <td>${valores.nome}</td>
+            `;
+        }
+
+        function desfazerEdicao(id){
+            const valores = valoresOriginais[id];
+            document.getElementById(`nome-${id}`).value = valores.nome;
+        }
+        function atualizarRegistro(id){
+            const nome = document.getElementById(`nome-${id}`).value;
+            
+            const atualizacao = {
+                nome: nome
+            };
+            return fetch(`http://localhost:8080/Autor/${id}`,{
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(atualizacao)
+        })
+        .then(response => {
+            if(response.ok){
+                alert("Registro atualizado com sucesso!")
+                fetchAutor();
+            }else{
+                alert("Erro ao atualizar o registro");
+            }
+        })
+        .catch(error => console.error("Erro:", error));
+        }
+        document.addEventListener('DOMContentLoaded', fetchAutor); 
+
+
+
+document.getElementById('searchInput').addEventListener('input', function () {
+
+           const searchTerm = this.value.toLowerCase();
+           const rows = document.querySelectorAll('.campos-tabela tr');  
+           rows.forEach(row => {
+               const cells = row.getElementsByTagName('td');
+               let rowContainsSearchTerm = false;
+
+               for (let i = 0; i < cells.length; i++) {
+                   const cellText = cells[i].textContent.toLowerCase();
+                   if (cellText.includes(searchTerm)) {
+                       rowContainsSearchTerm = true;
+                       break;
+                   }
+                 
+               }
+             
+
+               row.style.display = rowContainsSearchTerm ? '' : 'none';
+           });
+       });
+    
         
-    </table>
-    <script src="mobile-navebar.js"></script>
+    </script>
 </body>
 </html>

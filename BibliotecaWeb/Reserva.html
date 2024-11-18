@@ -1,53 +1,60 @@
 <!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Biblioteca</title>
-        <link rel="stylesheet" href="Index.css">
-        </head>
-        <body>
-            <header>
-                <nav>
-                    
-                    <a class="logo" href="/"> Biblioteca</a>
-                    <div class="mobile-menu">
-                        <div class="line1"></div>
-                        <div class="line2"></div>
-                        <div class="line3"></div>
-                    </div>
-                    <ul class="nav-list"> 
-                        <li><a href="Livros.html">Livro</a></li>
-                        <li><a href="Autor.html">Autor</a></li>
-                        <li><a href="Pessoa.html">Cliente</a></li>
-                        <li><a href="Emprestimo.html">Empréstimo</a></li>
-                        <li><a href="Genero.html">Gênero</a></li>
-                        <li><a href="Reserva.html">Devolução</a></li>
-                    </ul>
-                    <button class="Salvar">
-                        <p>Inserir</button></p>
-                </nav>
-            </header>
-            <main><h2>Devolução</h2>
-    <table>
-        <tr>
-            <th></th>
-            <th>ID de Reserva</th>
-            <th>Data da Reserva</th>
-            <th>Data da Devolução</th>
-            <th>ID do Livro</th>
-            <th>ID do Cliente</th>
-            
-        </tr>
-        <tr>
-            <td><button class="editar">Editar</button><button class="Excluir">Excluir</button></td>
-            <td>1</td>
-            <td>2025-10-11</td>
-            <td>2025-11-10</td>
-            <td>1</td>
-            <td>1</td>
-           </tr>
-        </table>
-        <script src="mobile-navebar.js"></script>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
+    </head>
+    <body>
+        
+        <header>
+            <nav>
+                <a style="font-size: 33px;">BIBLIOTECH</a>
+                <div class="mobile-menu">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+  
+                </div>
+                <ul class="nav-list"> 
+                    <li><a href="Livros.html">Livro<i class="fa-solid fa-book-open" style="padding: 2px;"></i></a></li>
+                    <li><a href="Autor.html">Autor <i class="fa-solid fa-user"></i></a></li>
+                    <li><a href="Pessoa.html">Cliente<i class="fa-solid fa-people-line" style="padding: 3px;"></i></a></li>
+                    <li><a href="Emprestimo.html">Empréstimo <i class="fa-solid fa-right-left"></i></a></li>
+                    <li><a href="Genero.html">Gênero <i class="fa-solid fa-tag"></i></a></li>
+                    <li><a href="Reserva.html">Reservas <i class="fa-regular fa-calendar"></i></a></li>
+                </ul>
+                
+            </nav>
+        </header>
+        <main><h1>Reserva</h1>
+                 <div class="container">
+              <table class="table">
+                <tr>
+                    <th scope="col"><a href="InserirReserva.html"><button class="Salvar">
+                        Inserir</button></a></th>
+
+                    <th scope="col" style="font-size: 23px;">Data de Reserva</th>
+                    <th scope="col" style="font-size: 23px;">Data de Devolução</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr>
+                    <th><i class="fa-solid fa-pen-to-square" id="editar"></i> 
+                        <i class="fa-solid fa-trash" id="delete"></i></th>
+                    <td>2025-10-11</td>
+                    <td>2025-11-10</td>
+                </tr>
+                <tr>
+                    <th scope="row"><i class="fa-solid fa-pen-to-square" id="editar"></i> 
+                                    <i class="fa-solid fa-trash" id="delete"></i></th>
+                    <td>2025-02-10</td>
+                    <td>2025-03-10</td>
+                </tr>
+              </table>
+            </div>
+    <script src="mobile-navebar.js"></script>
 </body>
 </html>

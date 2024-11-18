@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarGenero();
 
     function carregarAutores() {
-        fetch('http://192.168.1.7:8080/Autor')
+        fetch('http://localhost:8080/Autor')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Erro na Rede');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
      
     }
     function carregarGenero() {
-        fetch('http://192.168.1.7:8080/Genero')
+        fetch('http://localhost:8080/Genero')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Erro na Rede');
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     console.log("Dados do livro a serem enviados:", livro)
 
-    fetch('http://192.168.1.7:8080/Livro',{
+    fetch('http://localhost:8080/Livro',{
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'

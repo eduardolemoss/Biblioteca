@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca</title>
-    <link rel="stylesheet" href="Index.css">
+    <link rel="stylesheet" href="index.css">
     <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
+    
     </head>
     <body>
         
@@ -19,61 +20,267 @@
   
                 </div>
                 <ul class="nav-list"> 
-                    <li><a href="Livros.html">Livro</a></li>
-                    <li><a href="Autor.html">Autor</a></li>
-                    <li><a href="Pessoa.html">Cliente</a></li>
-                    <li><a href="Emprestimo.html">Empréstimo</a></li>
-                    <li><a href="Genero.html">Gênero</a></li>
-                    <li><a href="Reserva.html">Devolução</a></li>
+                    <li><a href="Livros.html">Livro<i class="fa-solid fa-book-open" style="padding: 2px;"></i></a></li>
+                    <li><a href="Autor.html">Autor <i class="fa-solid fa-user"></i></a></li>
+                    <li><a href="Pessoa.html">Cliente<i class="fa-solid fa-people-line" style="padding: 3px;"></i></a></li>
+                    <li><a href="Emprestimo.html">Empréstimo <i class="fa-solid fa-right-left"></i></a></li>
+                    <li><a href="Genero.html">Gênero <i class="fa-solid fa-tag"></i></a></li>
+                    <li><a href="Reserva.html">Reservas <i class="fa-regular fa-calendar"></i></a></li>
                 </ul>
                 
             </nav>
+            
+            
         </header>
         <main><h1>Livros</h1>
+            <a href="InserirLivro.html"><button class="Salvar">
+                Inserir <i class="fa-solid fa-plus"></i></button></a>
+        
+            <input class="input-busca" id="searchInput"
+            type="text" placeholder="Busar por Livro" oninput="busca()">
                  <div class="container">
               <table class="table">
+                <thead>
                 <tr>
-                    <th scope="col"><button class="Salvar"><a href=""></a>
-                        <p>Inserir</button></p></th>
-                       
-                    <th scope="col" style="font-size: 23px;">Nome do Livro</th>
-                    <th scope="col" style="font-size: 23px;">Código ISBN</th>
-                    <th scope="col" style="font-size: 23px;">Ano de Publicação</th>
+                    <th id="espaco">*</th>
+                    <th scope="col" style="font-size: 23px; width: 30%;">Titulo</th>
+                    <th scope="col" style="font-size: 23px; ">Autor</th>
                     <th scope="col" style="font-size: 23px;">Gênero</th>
-                    <th scope="col" style="font-size: 23px;">Autor</th>
+                    <th scope="col" style="font-size: 23px;">Ano de Publicação</th>
+                   
+                    
                 
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
-                <tr>
-                    <th><i class="fa-solid fa-pen-to-square" id="editar"></i> 
-                        <i class="fa-solid fa-trash" id="delete"></i></th>
-                    <td>O Alquimista</td> 
-                    <td>978-85-203-3130-7</td>
-                    <td>1988</td>
-                    <td>Aventura</td>
-                    <td>Paulo Coelho</td>
-                </tr>
-                <tr>
-                    <th scope="row"><i class="fa-solid fa-pen-to-square" id="editar"></i> 
-                                    <i class="fa-solid fa-trash" id="delete"></i></th>
-                    <td>Dom Casmurro</td>
-                    <td>978-85-359-0273-5</td>
-                    <td>1899</td>
-                    <td>Romance</td>
-                    <td>Machado de Assis</td>
-                </tr>
-                <tr>
-                    <th scope="row"><i class="fa-solid fa-pen-to-square" id="editar"></i> 
-                                    <i class="fa-solid fa-trash" id="delete"></i></th>
-                    <td>1984</td>
-                    <td>978-0-452-28423-4</td>
-                    <td>1949</td>
-                    <td>Distopia</td>
-                    <td>George Orwell</td>
-                </tr>
+            <tbody class="campos-tabela">
+
+
+            </tbody>
+               
               </table>
             </div>
-    <script src="mobile-navebar.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded",function () {
+            fetchLivros();
+        })
+        
+        function fetchLivros(){
+            fetch('http://localhost:8080/Livro')
+            .then(response => {
+                if (!response.ok){
+                    throw new Error ("Erro ao buscar os livros");
+                }
+                return response.json();
+            })
+            
+            .then(data => {
+                const tabela = document.querySelector(".table tbody");
+                tabela.innerHTML = ""; 
+
+                data.forEach(livro => {
+
+                    Promise.all([fetchGenero(livro.Id_genero),fetchAutor(livro.Id_autor)])
+                    .then(([genero,autor]) => { 
+                    const linha = document.createElement("tr");
+                    linha.id = `livro-${livro.id}`;
+
+                    linha.innerHTML = `
+                        <td class="td-icones">
+                            <i class="fa-solid fa-pen-to-square" id="editar" onclick="editar(${livro.id}, '${livro.Titulo}', '${autor.nome}', '${genero.nome}', '${livro.Ano_publicacao}')"></i> 
+                            <i class="fa-solid fa-trash" id="delete" onclick="excluirRegistro(${livro.id})"></i>
+                        </td>
+                        <td>${livro.Titulo}</td>
+                        <td>${autor.nome}</td>
+                        <td>${genero.nome}</td>
+                        <td>${livro.Ano_publicacao}</td>
+                    `;
+                    
+                    tabela.appendChild(linha);
+                
+                
+                });
+            })
+                
+            })
+            
+            .catch(error => console.error("Erro:",error));
+        }
+        function fetchGenero(id) {
+    return fetch(`http://localhost:8080/Genero/${id}`)
+        .then(response => response.json())
+        .then(data => data); 
+}
+
+function fetchAutor(id) {
+    return fetch(`http://localhost:8080/Autor/${id}`)
+        .then(response => response.json())
+        .then(data => data);  
+}
+
+
+        function excluirRegistro(id){
+            if(!confirm("tem certeza que deseja excluir?")){
+                return;
+            }
+
+            fetch(`http://localhost:8080/Livro/${id}`,{
+                method: 'DELETE'
+            })
+            .then(response => {
+                if(response.ok){
+                    alert("Livro excluído!");
+                    document.getElementById(`livro-${id}`).remove();
+                }else{
+                    alert("Erro ao excluir o livro");   
+                }
+            })
+            .catch(error => console.error("Erro:",error));
+        }
+        const valoresOriginais = {};
+
+        function editar(id,Titulo,Id_autor,Id_genero,Ano_publicacao){
+            const linha = document.getElementById(`livro-${id}`);
+            valoresOriginais[id] = {
+        Titulo,
+        Id_autor,
+        Id_genero,
+        Ano_publicacao
+    };
+
+            linha.innerHTML = `
+            <td class="td-icones">
+            <i class="fa-solid fa-save" onclick="atualizarRegistro(${id})"></i> 
+            <i class="fa-solid fa-undo" onclick="desfazerEdicao(${id})"></i>
+            <i class="fa-solid fa-times" onclick="cancelarEdicao(${id})"></i>
+        </td>
+        <td><input type="text" id="titulo-${id}" value="${Titulo}"></td>
+        <td><select id="autor-${id}"><option value="">Selecione um autor</option>
+            </select></td>
+            <td> <select id="genero-${id}"><option value="">Selecione um genero</option>
+            </select></td>
+           
+        <td><input type="text" id="ano_publicacao-${id}" value="${Ano_publicacao}"></td>
+
+    `;
+
+    carregarAutores(id);
+    carregarGeneros(id);
+}
+function cancelarEdicao(id) {
+    const valores = valoresOriginais[id];
+    const linha = document.getElementById(`livro-${id}`);
+    
+    
+    linha.innerHTML = `
+        <td class="td-icones">
+            <i class="fa-solid fa-pen-to-square" onclick="editar(${id}, '${valores.Titulo}', '${valores.Id_autor}', '${valores.Id_genero}', '${valores.Ano_publicacao}')"></i>
+            <i class="fa-solid fa-trash" onclick="excluirRegistro(${id})"></i>
+        </td>
+        <td>${valores.Titulo}</td>
+        <td>${valores.Id_autor}</td>
+        <td>${valores.Id_genero}</td>
+        <td>${valores.Ano_publicacao}</td>
+    `;
+}
+
+    function desfazerEdicao(id) {
+        const valores = valoresOriginais[id];
+    document.getElementById(`titulo-${id}`).value = valores.Titulo;
+    document.getElementById(`autor-${id}`).value = valores.Id_autor;
+    document.getElementById(`genero-${id}`).value = valores.Id_genero;
+    document.getElementById(`ano_publicacao-${id}`).value = valores.Ano_publicacao;
+}
+
+    function carregarAutores(id) {
+    fetch("http://localhost:8080/Autor")
+        .then(response => response.json())
+        .then(autores => {
+            const selectAutor = document.getElementById(`autor-${id}`);
+            autores.forEach(autor => {
+                const option = document.createElement("option");
+                option.value = autor.id;
+                option.textContent = autor.nome; 
+                selectAutor.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Erro ao carregar autores:", error));
+}
+
+function carregarGeneros(id) {
+    fetch("http://localhost:8080/Genero")
+        .then(response => response.json())
+        .then(generos => {
+            const selectGenero = document.getElementById(`genero-${id}`);
+            generos.forEach(genero => {
+                const option = document.createElement("option");
+                option.value = genero.id;
+                option.textContent = genero.nome; 
+                selectGenero.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Erro ao carregar gêneros:", error));
+}
+
+        function atualizarRegistro(id){
+            const Titulo = document.getElementById(`titulo-${id}`).value;
+            const Id_autor = document.getElementById(`autor-${id}`).value;
+            const Id_genero = document.getElementById(`genero-${id}`).value;
+            const Ano_publicacao = document.getElementById(`ano_publicacao-${id}`).value;
+
+            const atualizacao = {
+                titulo: Titulo,
+                ano_publicacao: Ano_publicacao,
+                id_genero: Id_genero,
+                id_autor:Id_autor 
+            };
+
+           return fetch(`http://localhost:8080/Livro/${id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(atualizacao)
+        })
+        .then(response => {
+            if(response.ok){
+                alert("Registro atualizado com sucesso!")
+                fetchLivros();
+            }else{
+                alert("Erro ao atualizar o registro");
+            }
+        })
+        .catch(error => console.error("Erro:", error));
+        }
+
+      
+    document.addEventListener('DOMContentLoaded', fetchLivros); 
+
+
+
+document.getElementById('searchInput').addEventListener('input', function () {
+
+           const searchTerm = this.value.toLowerCase();
+           const rows = document.querySelectorAll('.campos-tabela tr');  
+           rows.forEach(row => {
+               const cells = row.getElementsByTagName('td');
+               let rowContainsSearchTerm = false;
+
+               for (let i = 0; i < cells.length; i++) {
+                   const cellText = cells[i].textContent.toLowerCase();
+                   if (cellText.includes(searchTerm)) {
+                       rowContainsSearchTerm = true;
+                       break;
+                   }
+                 
+               }
+             
+
+               row.style.display = rowContainsSearchTerm ? '' : 'none';
+           });
+       });
+
+    
+
+    </script>
+    
 </body>
 </html>
