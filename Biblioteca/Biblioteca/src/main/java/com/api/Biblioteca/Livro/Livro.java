@@ -28,6 +28,8 @@ public class Livro {
 		this.ano_publicacao = dados.ano_publicacao();
 		this.id_autor = dados.id_autor();
 		this.id_genero = dados.id_genero();
+		this.foto = dados.foto();
+		this.status = "DISPONIVEL";
 		
 	}
 
@@ -39,7 +41,8 @@ public class Livro {
 	private String ano_publicacao;
 	private Long id_genero;
 	private Long id_autor;
-	
+	private String status;
+	private String foto;
 	
 	
 	public void atualizaInformacoes(dadosAlteracaoLivro dados) {
@@ -59,10 +62,27 @@ public class Livro {
 		}
 		if(dados.id_genero() != null && dados.id_genero() != 0) {
 			this.id_genero = dados.id_genero();
+		}	
+		if(dados.foto() != null) {
+			this.foto = dados.foto();
 		}
-		
+		if(dados.id() != null) {
+			this.id = dados.id();
+		}
+	}
+
+
+	public void atualizaStatusLivro(String status) {
+		this.status = status;
 		
 	}
 
+
+
+	
+
+
+
+	
 	
 }

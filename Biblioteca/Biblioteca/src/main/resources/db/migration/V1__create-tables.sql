@@ -45,3 +45,4 @@ CREATE TABLE Reserva(
 	foreign key (id_livro) references Livro(id),
 	foreign key (id_pessoa) references Pessoa(id)
 );
+

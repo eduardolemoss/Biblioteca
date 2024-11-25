@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.api.Biblioteca.Autor.AutorRepository;
+import com.api.Biblioteca.Genero.GeneroRepository;
 import com.api.Biblioteca.Livro.DadosCadastroLivro;
 import com.api.Biblioteca.Livro.DadosListagemLivro;
 import com.api.Biblioteca.Livro.Livro;
@@ -35,21 +37,35 @@ public class LivroController {
 	@Autowired
 	private AutorRepository autorRepository;
 	
+	@Autowired
+	private GeneroRepository generoRepository;
 	
 
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> cadastrar(@RequestBody DadosCadastroLivro dados){ 
+		if(!autorRepository.existsById(dados.id_autor())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Autor não encontrado");
+		}
+		if(!generoRepository.existsById(dados.id_genero())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Genero não encontrado");
+		}
 		var Livro = new Livro(dados);
 		livroRepository.save(Livro);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(Livro.getId_autor()).toUri();
+				.buildAndExpand(Livro.getId()).toUri();
 		return ResponseEntity.created(location).body(Livro);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<DadosListagemLivro>> listar() {
-		var lista = livroRepository.findAll().stream().map(DadosListagemLivro::new).toList();
+	public ResponseEntity<List<DadosListagemLivro>> listar(@RequestParam(required = false) String search) {
+		List<DadosListagemLivro> lista;
+		if(search != null) {
+			lista = livroRepository.findByTituloContaining(search).stream().map(DadosListagemLivro:: new ).toList();
+		}
+		else {
+			lista = livroRepository.findAll().stream().map(DadosListagemLivro::new).toList();
+		}
 		return ResponseEntity.ok(lista);
 
 	}
@@ -59,14 +75,15 @@ public class LivroController {
 	public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody dadosAlteracaoLivro dados) {
 		if (!autorRepository.existsById(dados.id_autor())) {
 			return ResponseEntity.badRequest().body("Autor não encontrado");
-
 		}
 		if (!livroRepository.existsById(id)) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Livro não encontrado");
 		}
+		if(!generoRepository.existsById(dados.id_genero())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Genero não encontrado");
+		}
 		var livro = livroRepository.getReferenceById(id);
 		livro.atualizaInformacoes(dados);
-		livroRepository.save(livro);
 		return ResponseEntity.ok(dados);
 	} 
 

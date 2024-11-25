@@ -56,7 +56,7 @@ public class AutorController {
 	}
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> excluir(@PathVariable long id){
+	public ResponseEntity<?> excluir(@PathVariable Long id){
 		if(!autorRepository.existsById(id)) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Autor nao encontrado");
 		}
