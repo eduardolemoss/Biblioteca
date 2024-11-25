@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testador de Alerta de Inserção</title>
+    <link href="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #243757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #1d2c46;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Testador de Alerta de Inserção</h1>
+    <p>Pressione o botão abaixo para simular a inserção de um livro e ver o alerta de confirmação.</p>
+    
+    <button id="testarAlert">Testar Alerta de Inserção</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.7.0/notyf.min.js"></script>
+    <script>
+        // Instanciando o Notyf
+        const notyf = new Notyf({
+            duration: 3000, // Duração da notificação
+            position: { x: 'right', y: 'top' }, // Posição da notificação
+            dismissible: true // Tornar a notificação fechável
+        });
+
+        // Simula a ação de inserir um livro
+        document.getElementById('testarAlert').addEventListener('click', function () {
+            // Simula a inserção com sucesso
+            notyf.success('Livro inserido com sucesso!');
+
+            // Simula um pequeno atraso antes de mostrar o erro (opcional)
+            setTimeout(function () {
+                // Simula a notificação de erro, caso algo dê errado
+                notyf.error('Erro ao inserir livro. Tente novamente.');
+            }, 5000);
+        });
+    </script>
+
+</body>
+</html>

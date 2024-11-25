@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca</title>
-<<<<<<< HEAD
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="genero.css">
     <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
     <header>
@@ -87,25 +88,48 @@
             .catch(error => console.error("Erro:",error));
         }
 
-        function excluirRegistro(id){
-            if(!confirm("tem certeza que deseja excluir?")){
-                return;
-            }
-
-            fetch(`http://localhost:8080/Genero/${id}`,{
+        function excluirRegistro(id) {
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você não poderá reverter esta ação!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost:8080/Genero/${id}`, {
                 method: 'DELETE'
             })
             .then(response => {
-                if(response.ok){
-                    alert("Gênero excluído!");
-                    document.getElementById(`Genero-${id}`).remove();
-                }else{
-                    alert("Erro ao excluir o Gênero");
+                if (response.ok) {
+                    Swal.fire(
+                        'Excluído!',
+                        'O livro foi excluído com sucesso.',
+                        'success'
+                    );
+                    document.getElementById(`genero-${id}`).remove();
+                } else {
+                    Swal.fire(
+                        'Erro!',
+                        'Houve um problema ao excluir o livro.',
+                        'error'
+                    );
                 }
             })
-            .catch(error => console.error("Erro:",error));
+            .catch(error => {
+                console.error("Erro:", error);
+                Swal.fire(
+                    'Erro!',
+                    'Não foi possível concluir a operação.',
+                    'error'
+                );
+            });
         }
-
+    });
+}
         const valoresOriginais = {};
 
 function editar(id, nome){
@@ -188,57 +212,5 @@ document.getElementById('searchInput').addEventListener('input', function () {
 
     </script>
     
-=======
-    <link rel="stylesheet" href="genero.css">
-    <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
-    </head>
-    <body>
-        
-        <header>
-            <nav>
-                <a style="font-size: 33px;">BIBLIOTECH</a>
-                <div class="mobile-menu">
-                    <div class="line1"></div>
-                    <div class="line2"></div>
-                    <div class="line3"></div>
-  
-                </div>
-                <ul class="nav-list"> 
-                    <li><a href="Livros.html">Livro</a></li>
-                    <li><a href="Autor.html">Autor</a></li>
-                    <li><a href="Pessoa.html">Cliente</a></li>
-                    <li><a href="Emprestimo.html">Empréstimo</a></li>
-                    <li><a href="Genero.html">Gênero</a></li>
-                    <li><a href="Reserva.html">Devolução</a></li>
-                </ul>
-                
-            </nav>
-        </header>
-        <main><h1>Gênero</h1>
-                 <div class="container">
-              <table class="table">
-                <tr>
-                    <th scope="col"><a href="InserirGenero.html"><button class="Salvar">
-                        Inserir</button></a></th>
-                       
-                    <th scope="col" style="font-size: 23px;">Gênero</th>
-                  
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <tr>
-                    <th><i class="fa-solid fa-pen-to-square" id="editar"></i> 
-                        <i class="fa-solid fa-trash" id="delete"></i></th>
-                    <td>Terro</td>
-                </tr>
-                <tr>
-                    <th scope="row"><i class="fa-solid fa-pen-to-square" id="editar"></i> 
-                                    <i class="fa-solid fa-trash" id="delete"></i></th>
-                    <td>Romance</td>
-                </tr>
-              </table>
-            </div>
-    <script src="mobile-navebar.js"></script>
->>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
 </body>
 </html>

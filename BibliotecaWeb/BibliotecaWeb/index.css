@@ -145,3 +145,29 @@ input::placeholder{
     cursor: pointer;
     font-size: 25px;
 }
+
+.status-tag {
+     padding: 5px 10px;
+     border-radius: 5px;
+     font-weight: bold;
+    }
+.available {
+    background-color: #2da820;
+    color: white;
+    }
+
+.borrowed {
+    background-color: #cf3429;
+    color: white;
+    }
+    .tag-status {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    
+
+    

@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca</title>
-<<<<<<< HEAD
     <link rel="stylesheet" href="index.css">
-=======
-    <link rel="stylesheet" href="livro.css">
->>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
     <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     
     </head>
     <body>
@@ -46,33 +44,19 @@
               <table class="table">
                 <thead>
                 <tr>
-<<<<<<< HEAD
                     <th id="espaco">*</th>
-                    <th scope="col" style="font-size: 23px; width: 30%;">Titulo</th>
-                    <th scope="col" style="font-size: 23px; ">Autor</th>
-=======
-<<<<<<< HEAD
-                    <th scope="col"><a href="InserirLivro.html"><button class="Salvar">
-                        Inserir</button></a></th>
-=======
-                    <th scope="col"><button class="Salvar"><a href=""></a>
-                        <p>Inserir</button></p></th>
->>>>>>> 2b3d2d79b9e2fab0faf952df7ff2ca87d8cf31d2
-                       
-                    <th scope="col" style="font-size: 23px;">Nome do Livro</th>
-                    <th scope="col" style="font-size: 23px;">Código ISBN</th>
-                    <th scope="col" style="font-size: 23px;">Ano de Publicação</th>
->>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
-                    <th scope="col" style="font-size: 23px;">Gênero</th>
-                    <th scope="col" style="font-size: 23px;">Ano de Publicação</th>
+                    <th scope="col" style="font-size: 23px; width: 15%;">Titulo</th>
+                    <th scope="col" style="font-size: 23px;">Autor</th>
+                    <th scope="col" style="font-size: 23px;">Genero</th>
+                    <th scope="col" style="font-size: 23px;">Autor</th>
+                    <th scope="col" style="font-size: 23px;"></th>
+
                    
                     
                 
                 </tr>
             </thead>
             <tbody class="campos-tabela">
-
-
             </tbody>
                
               </table>
@@ -80,39 +64,44 @@
     
     <script>
         document.addEventListener("DOMContentLoaded",function () {
-            fetchLivros();
+            
         })
         
-        function fetchLivros(){
-            fetch('http://localhost:8080/Livro')
-            .then(response => {
-                if (!response.ok){
-                    throw new Error ("Erro ao buscar os livros");
-                }
-                return response.json();
-            })
-            
-            .then(data => {
-                const tabela = document.querySelector(".table tbody");
-                tabela.innerHTML = ""; 
+            function fetchLivros(){
+                fetch('http://localhost:8080/Livro')
+                .then(response => {
+                    if (!response.ok){
+                        throw new Error ("Erro ao buscar os livros");
+                    }
+                    return response.json();
+                })
+                
+                .then(data => {
+                    const tabela = document.querySelector(".table tbody");
+                    tabela.innerHTML = ""; 
 
-                data.forEach(livro => {
+                    data.forEach(livro => {
 
-                    Promise.all([fetchGenero(livro.Id_genero),fetchAutor(livro.Id_autor)])
-                    .then(([genero,autor]) => { 
-                    const linha = document.createElement("tr");
-                    linha.id = `livro-${livro.id}`;
+                        Promise.all([fetchGenero(livro.Id_genero),fetchAutor(livro.Id_autor)])
+                        .then(([genero,autor]) => { 
+                        const linha = document.createElement("tr");
+                        linha.id = `livro-${livro.id}`;
 
-                    linha.innerHTML = `
-                        <td class="td-icones">
-                            <i class="fa-solid fa-pen-to-square" id="editar" onclick="editar(${livro.id}, '${livro.Titulo}', '${autor.nome}', '${genero.nome}', '${livro.Ano_publicacao}')"></i> 
-                            <i class="fa-solid fa-trash" id="delete" onclick="excluirRegistro(${livro.id})"></i>
-                        </td>
-                        <td>${livro.Titulo}</td>
-                        <td>${autor.nome}</td>
-                        <td>${genero.nome}</td>
-                        <td>${livro.Ano_publicacao}</td>
-                    `;
+                        linha.innerHTML = `
+                            <td class="td-icones">
+                                <i class="fa-solid fa-pen-to-square" id="editar" onclick="editar(${livro.id}, '${livro.Titulo}', '${autor.nome}', '${genero.nome}', '${livro.Ano_publicacao}')"></i> 
+                                <i class="fa-solid fa-trash" id="delete" onclick="excluirRegistro(${livro.id})"></i>
+                            </td>
+                            <td>${livro.Titulo}</td>
+                            <td>${autor.nome}</td>
+                            <td>${genero.nome}</td>
+                            <td>${livro.Ano_publicacao}</td>
+                            <td class ="no-hover">    
+                            <span class="status-tag ${livro.status === 'DISPONIVEL' ? 'available' : 'borrowed'}">
+                        ${livro.status === 'DISPONIVEL' ? 'DISPONÍVEL' : 'EMPRESTADO'}
+                    </span>
+                    </td>   
+                        `;
                     
                     tabela.appendChild(linha);
                 
@@ -137,24 +126,48 @@ function fetchAutor(id) {
 }
 
 
-        function excluirRegistro(id){
-            if(!confirm("tem certeza que deseja excluir?")){
-                return;
-            }
-
-            fetch(`http://localhost:8080/Livro/${id}`,{
+function excluirRegistro(id) {
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você não poderá reverter esta ação!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost:8080/Livro/${id}`, {
                 method: 'DELETE'
             })
             .then(response => {
-                if(response.ok){
-                    alert("Livro excluído!");
+                if (response.ok) {
+                    Swal.fire(
+                        'Excluído!',
+                        'O livro foi excluído com sucesso.',
+                        'success'
+                    );
                     document.getElementById(`livro-${id}`).remove();
-                }else{
-                    alert("Erro ao excluir o livro");   
+                } else {
+                    Swal.fire(
+                        'Erro!',
+                        'Houve um problema ao excluir o livro.',
+                        'error'
+                    );
                 }
             })
-            .catch(error => console.error("Erro:",error));
+            .catch(error => {
+                console.error("Erro:", error);
+                Swal.fire(
+                    'Erro!',
+                    'Não foi possível concluir a operação.',
+                    'error'
+                );
+            });
         }
+    });
+}
         const valoresOriginais = {};
 
         function editar(id,Titulo,Id_autor,Id_genero,Ano_publicacao){

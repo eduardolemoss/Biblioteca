@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarPessoa();
     carregarLivro();
 
+
     function carregarPessoa() {
         fetch('http://localhost:8080/Pessoa')
         .then(response => {
@@ -13,15 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
             const selectpessoa = document.getElementById('pessoa');
             if(selectpessoa){
-                data.forEach(carregarPessoa => {
+                data.forEach(pessoa => {
                     const option = document.createElement('option');
-                    option.value = carregarPessoa.id;
-                    option.textContent = carregarPessoa.nome;
-<<<<<<< HEAD
+                    option.value = pessoa.Id;
+                    option.textContent = pessoa.nome;
                     selectpessoa.appendChild(option);
-=======
-                    selectAutor.appendChild(option);
->>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
                 })
             } else {
                 console.error("Elemento 'pessoa' nao encontrado")
@@ -47,12 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 data.forEach(carregarLivro => {
                     const option = document.createElement('option');
                     option.value = carregarLivro.id;
-                    option.textContent = carregarLivro.nome;
-<<<<<<< HEAD
+                    option.textContent = carregarLivro.Titulo;
                     selectlivro.appendChild(option);
-=======
-                    selectgenero.appendChild(option);
->>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
                 })
             }
             else{
@@ -66,27 +59,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    });
+   
+ document.getElementById("confirmar").addEventListener('click',function confirmar ()
+    {
 
-
-function confirmar() {
     const emprestimo = {
-<<<<<<< HEAD
-=======
-         Data_emprestimo: document.getElementById('data-emprestimo').value,
-         Data_devolucao: document.getElementById('data-devolucao').value,
->>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
-         id_pessoa: document.getElementById('pessoa-id').value,
-         id_livro: document.getElementById('livro-id').value,
+         data_emprestimo: document.getElementById('data_emprestimo').value,
+         data_devolucao: document.getElementById('data_devolucao').value,
+         id_pessoa: document.getElementById('pessoa').value,
+         id_livro: document.getElementById('livro').value,
         
     };
-    console.log("Dados do livro a serem enviados:", emprestimo)
+    console.log("Dados do emprestimo a serem enviados:", emprestimo)
+    console.log("Dados do livro a serem enviados:", livro);
+    const notyf = new Notyf({
+        duration: 3000, // Duração do alerta
+        position: { x: 'center', y: 'bottom' }, // Posição da notificação
+        dismissible: true // Tornar a notificação fechável
+    });
 
-<<<<<<< HEAD
-    fetch('http://192.168.1.7:8080/Emprestimo',{
-=======
-    fetch('http://192.168.1.7:8080/Livro',{
->>>>>>> d8b0d672106c6f027d336ce00b71aa232e0afe59
+    fetch('http://localhost:8080/emprestimos',{
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'
@@ -101,13 +93,22 @@ function confirmar() {
         return response.json();
     })
     .then(data => {
-        alert('Emprestimo inserido')
+        
+        notyf.success('Emprestimo inserido com sucesso!');
+        console.log(data)
+        document.getElementById('data_emprestimo').value = '';
+        document.getElementById('data_devolucao').value = '';
+        document.getElementById('pessoa').value = '';
+        document.getElementById('livro').value = '';
         console.log(data);
+
     })
     .catch(error => {
         console.error('Erro:', error);
-        alert('Ocorreu um erro ao inserir.');
+      
+        notyf.error('Ocorreu um erro ao inserir o emprestimo.');
     });
     
 }
-    
+ )
+});
