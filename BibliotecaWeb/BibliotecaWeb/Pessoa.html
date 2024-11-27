@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="index.css">
     <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.4.0/notyf.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/notyf@3.4.0/notyf.min.css" rel="stylesheet">
+
+
 
 </head>
 <body>
@@ -158,8 +162,8 @@
             <i class="fa-solid fa-times" onclick="cancelarEdicao(${Id})"></i>
         </td>
         <td><input type="text" id="nome-${Id}" value="${nome}"></td>
-        <td><input type="text" id="telefone-${Id}" value="${telefone}"></td> 
-        <td><input type="text" id="email-${Id}" value="${email}"></td> 
+        <td><input type="text" id="email-${Id}" value="${email}"></td>
+        <td><input type="text" id="telefone-${Id}" value="${telefone}"></td>  
   
     `;
 
@@ -186,34 +190,39 @@
         document.getElementById(`telefone-${Id}`).value = valores.telefone;
         document.getElementById(`email-${Id}`).value = valores.email;
     }
-    function atualizarRegistro(Id){
-        const nome = document.getElementById(`nome-${Id}`).value;
-        const telefone = document.getElementById(`telefone-${Id}`).value;
-        const email = document.getElementById(`email-${Id}`).value;
+    const notyf = new Notyf();
+
+function atualizarRegistro(Id) {
+    const nome = document.getElementById(`nome-${Id}`).value;
+    const telefone = document.getElementById(`telefone-${Id}`).value;
+    const email = document.getElementById(`email-${Id}`).value;
     
+    const atualizacao = {
+        nome: nome,
+        telefone: telefone,
+        email: email
+    };
 
+    console.log(atualizacao);
+    return fetch(`http://localhost:8080/Pessoa/${Id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(atualizacao)
+    })
+    .then(response => {
+        if (response.ok) {
+            notyf.success("Registro atualizado com sucesso!");
+            fetchPessoas();
+        } else {
+            notyf.error("Erro ao atualizar o registro");
+        }
+    })
+    .catch(error => {
+        notyf.error("Erro ao processar a requisição.");
+        console.error("Erro:", error);
+    });
+}
 
-        const atualizacao = {
-            nome: nome,
-            telefone: telefone,
-            email: email
-        };
-        console.log(atualizacao);
-        return fetch(`http://localhost:8080/Pessoa/${Id}`, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(atualizacao)
-        })
-        .then(response => {
-            if(response.ok){
-                
-                fetchPessoas();
-            }else{
-                alert("Erro ao atualizar o registro");
-            }
-        })
-        .catch(error => console.error("Erro:", error));
-    }
 
    
     document.addEventListener('DOMContentLoaded', fetchPessoas); 

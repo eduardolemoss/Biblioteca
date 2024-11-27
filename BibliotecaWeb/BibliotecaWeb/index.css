@@ -1,5 +1,6 @@
 body{
-    background-color: #dad5b7 !important; 
+    background-color: #e9e5db !important; 
+    font-family: 'Helvetica ', sans-serif;
     
 }
 * {
@@ -160,14 +161,4 @@ input::placeholder{
     background-color: #cf3429;
     color: white;
     }
-    .tag-status {
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        text-align: center;
-        display: inline-block;
-    }
-    
-    
-
-    
+   

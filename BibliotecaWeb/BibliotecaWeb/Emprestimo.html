@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="emprestimo.css">
     <script src="https://kit.fontawesome.com/0008a4338f.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.4.0/notyf.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/notyf@3.4.0/notyf.min.css" rel="stylesheet">
+
+
 
 </head>
 <body>
@@ -41,11 +45,11 @@
             <thead>
             <tr>
                 <th id="espaco">*</th>
-                <th scope="col" style="font-size: 23px; width: 30%;">Data emprestimo</th>
+                <th scope="col" style="font-size: 23px; width: 20%;">Data emprestimo</th>
                 <th scope="col" style="font-size: 23px; ">Data Devolução</th>
                 <th scope="col" style="font-size: 23px;">Livro</th>
                 <th scope="col" style="font-size: 23px;">Pessoa</th>
-                <th scope="col" style="font-size: 23px;"></th>
+                <th scope="col" style="font-size: 23px; width: 100%;"></th>
                
                 
             
@@ -92,18 +96,18 @@
                         <td>${formatDate(emprestimo.data_devolucao)}</td>
                         <td>${livro.Titulo}</td>
                         <td>${pessoa.nome}</td>
-                        <td class="no-hover"><i class="fa-solid fa-right-left" class="btn-devolucao" onclick="confirmDevolucao(${emprestimo.id}, '${livro.nome}', '${pessoa.nome}', '${formatDate(emprestimo.data_devolucao)}')" aria-label="Devolver Empréstimo"></i></td>
+                        <td class="no-hover"><i class="fa-solid fa-right-left" class="btn-devolucao" onclick="confirmDevolucao(${emprestimo.id}, '${livro.Titulo}', '${pessoa.nome}', '${formatDate(emprestimo.data_devolucao)}')" aria-label="Devolver Empréstimo"></i></td>
                     `   
                     tabela.appendChild(linha);
                     })
                 })
             })
             }
-            async function confirmDevolucao(id,livro,pessoa,data_devolucao) {
+            async function confirmDevolucao(id,Titulo,nome,data_devolucao) {
                 if(!data_devolucao || data_devolucao === null || data_devolucao === ""){
                     Swal.fire({
             title: 'Confirmar Devolução',
-            text: `Deseja realmente devolver o livro "${livro.nome}" emprestado para "${pessoa.nome}"?`,
+            text: `Deseja realmente devolver o livro "${Titulo}" emprestado para "${nome}"?`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#007bff',
@@ -115,6 +119,8 @@
                 await devolverEmprestimo(id);
             }
         });
+       
+
     } else {
         Swal.fire({
             icon: 'error',
@@ -159,7 +165,7 @@
         Swal.fire({
             icon: 'error',
             title: 'Erro',
-            text: 'Não foi possível registrar a devolução.',
+            text: 'Não foi possível registrar a devolução.'+ response,
             confirmButtonColor: '#007bff'
         });
     }
@@ -238,9 +244,9 @@ function excluirRegistro(id) {
         </td>
         <td><input type="text" id="data_emprestimo-${id}" value="${data_emprestimo}"></td>
         <td><input type="text" id="data_devolucao-${id}" value="${data_devolucao}"></td>
-        <td><select id="id_livro-${id}"><option value="">Selecione um livro</option>
+        <td><select id="id_livro-${id}">Selecione um livro
             </select></td>
-            <td> <select id="id_pessoa-${id}"><option value="">Selecione um cliente</option>
+            <td> <select id="id_pessoa-${id}">Selecione um cliente
             </select></td>
 
     `
@@ -299,22 +305,20 @@ function carregarPessoa(id) {
         })
         .catch(error => console.error("Erro ao carregar pessoas:", error));
 }
+const notyf = new Notyf();
+
 function atualizarRegistro(id) {
     const data_emprestimo = document.getElementById(`data_emprestimo-${id}`).value;
     const data_devolucao = document.getElementById(`data_devolucao-${id}`).value;
     const id_livro = document.getElementById(`id_livro-${id}`).value;
     const id_pessoa = document.getElementById(`id_pessoa-${id}`).value;
 
-    
-
     const atualizacao = {
         data_emprestimo: data_emprestimo,
         data_devolucao: data_devolucao,
         id_pessoa: id_pessoa,
         id_livro: id_livro
-       
     };
-
 
     return fetch(`http://localhost:8080/emprestimos/${id}`, {
         method: 'PUT',
@@ -323,14 +327,18 @@ function atualizarRegistro(id) {
     })
     .then(response => {
         if (response.ok) {
-            alert("Registro de empréstimo atualizado com sucesso!");
+            notyf.success("Registro de empréstimo atualizado com sucesso!");
             fetchEmprestimo(); 
         } else {
-            alert("Erro ao atualizar o registro de empréstimo.");
+            notyf.error("Erro ao atualizar o registro de empréstimo.");
         }
     })
-    .catch(error => console.error("Erro:", error));
+    .catch(error => {
+        notyf.error("Erro ao processar a requisição.");
+        console.error("Erro:", error);
+    });
 }
+
 
 document.addEventListener('DOMContentLoaded', fetchEmprestimo); 
 

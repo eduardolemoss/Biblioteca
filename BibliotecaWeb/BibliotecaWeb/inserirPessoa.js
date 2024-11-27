@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded",  () => {
     
-    document.getElementById("confirmar").addEventListener ("click", function confirmar(){
+    document.getElementById("confirmar").addEventListener ("click", function (){
+
+        event.preventDefault();
+
         const pessoa = {
             nome: document.getElementById('nome').value,
             email: document.getElementById('email').value,

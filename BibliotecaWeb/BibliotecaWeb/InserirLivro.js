@@ -76,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ISBN: document.getElementById('ISBN').value,
             id_autor: document.getElementById('autor').value,
             id_genero: document.getElementById('genero').value,
-            ano_publicacao: document.getElementById('ano-publicacao').value
+            ano_publicacao: document.getElementById('ano-publicacao').value,
+            foto : document.getElementById('foto').value
         };
     
         console.log("Dados do livro a serem enviados:", livro);

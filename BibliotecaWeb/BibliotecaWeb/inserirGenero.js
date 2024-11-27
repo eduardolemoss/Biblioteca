@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function (){
 
-    const confirmar = document.getElementById('confirmar').addEventListener('click', function confirmar(){
+    const confirmar = document.getElementById('confirmar').addEventListener('click', function (){
+        event.preventDefault();
 
 
         const genero = {
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function (){
        };
 
        console.log("Dados do livro a serem enviados:", genero)
-       console.log("Dados do livro a serem enviados:", livro);
+       
        const notyf = new Notyf({
            duration: 3000, // Duração do alerta
            position: { x: 'center', y: 'bottom' }, // Posição da notificação

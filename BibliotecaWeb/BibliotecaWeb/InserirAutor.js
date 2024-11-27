@@ -1,8 +1,7 @@
  document.addEventListener('DOMContentLoaded', function(){
 
-    document.querySelector("#confirmar").addEventListener('click',function confirmar ()
-    {
-        
+    document.getElementById("confirmar").addEventListener('click',function (){
+        event.preventDefault()
        
         
         const autor = {
@@ -10,7 +9,7 @@
              
         };
         console.log("Dados do livro a serem enviados:", autor)
-        console.log("Dados do livro a serem enviados:", livro);
+       
         const notyf = new Notyf({
             duration: 3000, // Duração do alerta
             position: { x: 'center', y: 'bottom' }, // Posição da notificação
