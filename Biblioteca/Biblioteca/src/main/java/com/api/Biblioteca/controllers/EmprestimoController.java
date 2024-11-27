@@ -111,7 +111,7 @@ public class EmprestimoController {
     	}
     	var emprestimo = emprestimoRepository.getReferenceById(id);
     	Livro livro = livroRepository.findById(emprestimo.getId()).orElse(null);
-    	if(emprestimo.getLivro() != null) {
+    	if(livro != null) {
     		livro.atualizaStatusLivro("DISPONIVEL");
     		livroRepository.save(livro);
     	}

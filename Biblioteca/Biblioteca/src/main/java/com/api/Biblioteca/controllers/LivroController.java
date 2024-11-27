@@ -108,4 +108,10 @@ public class LivroController {
 			return ResponseEntity.ok(dados);
 		}
 	}
+	@GetMapping("/status")
+	public ResponseEntity<List<DadosListagemLivro>> listarStatus() {
+		var lista = livroRepository.findByStatusContaining("DISPONIVEL").stream().map(DadosListagemLivro::new).toList();
+		return ResponseEntity.ok(lista);
+
+	}
 }

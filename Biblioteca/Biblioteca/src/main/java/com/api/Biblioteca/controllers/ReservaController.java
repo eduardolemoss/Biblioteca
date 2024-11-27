@@ -44,8 +44,8 @@ public class ReservaController {
 	public ResponseEntity<?> cadastrar(@RequestBody DadosCadastroReserva dados){
 		var Reserva = new Reserva(dados);
 		reservaRepository.save(Reserva);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id_pessoa}/{id_livro}")
-				.buildAndExpand(Reserva.getId_pessoa(),Reserva.getId_livro()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(Reserva.getId()).toUri();
 		return ResponseEntity.created(location).body(Reserva);
 	}
 @GetMapping
@@ -53,29 +53,30 @@ public ResponseEntity<List<DadosListagemReserva>> listar(){
 	var lista = reservaRepository.findAll().stream().map(DadosListagemReserva::new).toList();
 	return ResponseEntity.ok(lista);
 }
-@PutMapping
+@PutMapping("/{id}")
 @Transactional
-public ResponseEntity<?> excluir(@PathVariable dadosAlteracaoReserva dados){
-	if (!reservaRepository.existsById(dados.id_pessoa())) {
+public ResponseEntity<?> atualizarReserva(@PathVariable Long id, @RequestBody dadosAlteracaoReserva dados){
+	if (!pessoaRepository.existsById(dados.id_pessoa())) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pessoa não encontrada");
 	}
-	if(!reservaRepository.existsById(dados.id_livro())) {
+	if(!livroRepository.existsById(dados.id_livro())) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Livro não encontrado");
 	}
-	if(!reservaRepository.existsById(dados.Id())) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id não encontrado");
+	if(!reservaRepository.existsById(id)) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reserva não encontrada");
 	}
-	var Reserva = reservaRepository.getReferenceById(dados.Id());
+	var Reserva = reservaRepository.getReferenceById(id);
 	Reserva.atualizaInformacoes(dados);
 	return ResponseEntity.ok(dados);
 }
 @DeleteMapping("/{id}")
 @Transactional
-public ResponseEntity<?> excluir(@PathVariable Long Id){
-	if(!reservaRepository.existsById(Id)) {
+public ResponseEntity<?> excluir(@PathVariable Long id){
+	if(!reservaRepository.existsById(id)) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reserva não encontrada");
 	}
-	reservaRepository.deleteById(Id);
+	reservaRepository.deleteById(id);
 	return ResponseEntity.noContent().build();
 }
+
 }

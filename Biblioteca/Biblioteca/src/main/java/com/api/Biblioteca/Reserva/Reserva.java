@@ -29,7 +29,7 @@ public Reserva(DadosCadastroReserva dados) {
 }
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long Id;
+private Long id;
 private String data_reserva;
 private String data_validade;
 private Long id_livro;
@@ -47,8 +47,8 @@ public void atualizaInformacoes(dadosAlteracaoReserva dados) {
 		this.id_livro = dados.id_livro();
 		
 	}
-	if(dados.id_pessoa() != null && dados.id_livro() != 0) {
-		this.id_livro = dados.id_livro();
+	if(dados.id_pessoa() != null && dados.id_pessoa() != 0) {
+		this.id_pessoa = dados.id_pessoa();
 	}
 	
 }
