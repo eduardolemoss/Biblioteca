@@ -5,6 +5,4 @@ public record DadosListagemLivro(String Titulo,String ISBN ,String Ano_publicaca
 		this(dados.getTitulo(), dados.getISBN(), dados.getAno_publicacao(),dados.getId_genero(), dados.getId_autor(), dados.getId(),dados.getStatus(),dados.getFoto());
 	}
 
-		
-
 }
