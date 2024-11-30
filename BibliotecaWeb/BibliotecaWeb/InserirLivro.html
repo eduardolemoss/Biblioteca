@@ -56,8 +56,9 @@
         <label for="ano-publicacao">Ano Publicação</label>
         <input type="text" id="ano-publicacao" class="input"><br>
 
-        <label for="">Foto:</label>
-        <input type="file" id="foto"><br><br>
+        <label for="foto">Foto:</label>
+        <input type="file" id="foto" name="foto" accept="image/*" onchange="convertImageToBase64()" required>
+        <input type="hidden" id="fotoBase64" name="fotoBase64"><br><br>
 
         <button id="confirmar">Confirmar</button>
         <button type="reset">Cancelar</button>

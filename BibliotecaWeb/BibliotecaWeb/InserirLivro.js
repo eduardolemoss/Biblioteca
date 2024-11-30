@@ -1,14 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-
-    
-
     carregarAutores();
     carregarGenero();
-
-    
-    
-
     function carregarAutores() {
         fetch('http://localhost:8080/Autor')
         .then(response => {
@@ -77,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id_autor: document.getElementById('autor').value,
             id_genero: document.getElementById('genero').value,
             ano_publicacao: document.getElementById('ano-publicacao').value,
-            foto : document.getElementById('foto').value
+            foto : document.getElementById('fotoBase64').value
         };
     
         console.log("Dados do livro a serem enviados:", livro);
@@ -124,3 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+function convertImageToBase64() {
+    const fileInput = document.getElementById('foto');
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        document.getElementById('fotoBase64').value = e.target.result;
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+
+
